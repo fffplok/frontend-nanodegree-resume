@@ -63,9 +63,10 @@ var googleMap = '<div id="map"></div>';
 The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
 */
 $(document).ready(function() {
+  console.log('$(document).ready!');
   $('button').click(function() {
     var iName = inName() || function(){};
-    $('#name').html(iName);  
+    $('#name').html(iName);
   });
 });
 
@@ -102,6 +103,7 @@ var map;    // declares a global map variable
 Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
+  console.log('initializeMap');
 
   var locations;
 
@@ -138,6 +140,9 @@ function initializeMap() {
       locations.push(work.jobs[job].location);
     }
 
+    //GG code. keep number of locations for use later
+    numLocations = locations.length;
+
     return locations;
   }
 
@@ -171,6 +176,7 @@ function initializeMap() {
     // hmmmm, I wonder what this is about...
     google.maps.event.addListener(marker, 'click', function() {
       // your code goes here!
+      infoWindow.open(map,marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -180,6 +186,12 @@ function initializeMap() {
     map.fitBounds(bounds);
     // center the map
     map.setCenter(bounds.getCenter());
+
+    //GG code. reveal main when all markers have been created
+    ++markersCreated;
+    if (markersCreated >= numLocations) {
+      showMain();
+    }
   }
 
   /*
@@ -233,11 +245,12 @@ Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
+
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
-  // Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+window.addEventListener('resize', function(e) {
+  //Make sure the map bounds get updated on page resize
+  map.fitBounds(mapBounds);
+});

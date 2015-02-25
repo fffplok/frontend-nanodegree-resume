@@ -213,3 +213,7 @@ span {
     display: block;
   }
 }
+
+#main {
+  visibility: hidden;
+}
