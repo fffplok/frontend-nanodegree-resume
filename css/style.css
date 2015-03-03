@@ -1,38 +1,6 @@
-* {
-  padding:0;
-  margin:0;
-  font-family: 'Roboto', sans-serif;
-}
-
-.clearfix {
-  overflow: auto;
-}
-
 .education-entry, .work-entry, .project-entry {
   padding-left: 5%;
   padding-right: 5%;
-}
-
-h1 {
-  font-size: 40px;
-  color: #F5A623;
-  line-height: 48px;
-  display: inline;
-}
-
-h2 {
-  font-weight: bold;
-  font-size: 24px;
-  color: #999999;
-  line-height: 29px;
-  padding: 10px;
-}
-
-h3 {
-  font-style: italic;
-  font-size: 20px;
-  color: #000000;
-  line-height: 22px;
 }
 
 h4 {
@@ -42,12 +10,13 @@ h4 {
   line-height: 17px;
 }
 
-h2, h3, h4, h5 {
+/*
+  h2, h3, h4, h5 {
   padding:10px;
   padding-left: 5%;
   padding-right: 5%;
 }
-
+*/
 
 .date-text {
   font-style: italic;
@@ -79,44 +48,39 @@ a {
   display: block;
 }
 
-.welcome-message {
-  font-style: italic;
-  font-size: 18px;
-  color: #F3F3F3;
-  line-height: 28px;
-}
-
 #skillsH3 {
-  color: #F5AE23;
   display: none;
+  color: #666;
+  margin:0;
+  padding:1rem 0 0 0;
 }
 
 .orange {
   background-color: #F5AE23;
 }
-
+/*
 .orange-text {
   color: #F5AE23;
 }
-
+*/
 .white-text {
   font-weight: bold;
-  color: #FFFFFF;
+  color: #999; /*#FFFFFF;*/
 }
-
+/*
 .gray {
   background-color: #F3F3F3;
   padding-bottom: 10px;
   clear:both;
 }
-
+*/
 .dark-gray {
   background-color: #4A4A4A;
 }
 
-/* TODO: Replace with image later */
 #header {
   background-color: #484848;
+  background-image: url('../images/footer_lodyas.png');
 }
 
 .flex-box {
@@ -124,30 +88,30 @@ a {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 10px;
+  justify-content: space-between;
+  padding: .5rem 1rem 1.5rem 0;  /*1.5rem; 10px;*/
 }
-
+/*
 .center-content {
   padding-top: 2.5%;
   padding-left: 5%;
   padding-right: 5%;
   padding-bottom: 2.5%
 }
-
+*/
 ul {
   list-style-type: none;
+  margin:0;
 }
 
 .biopic {
-  float: left;
+/*  float: left;
   padding: 10px;
   width: 200px;
+*/
   display: none;
-}
-
-img {
-  padding: 10px;
+  max-width:100%;
+  height:auto;
 }
 
 /* Bar chart stuff */
@@ -161,11 +125,11 @@ img {
   color: white;
   display: inline-block;
 }
-
+/*
 span {
   padding: 5px;
 }
-
+*/
 #letsConnect {
   text-align: center;
 }
@@ -201,12 +165,6 @@ span {
   margin-right: 5%;
 }
 
-#mapDiv {
-  height: 400px;
-  width: 100%;
-  padding-bottom: 5%;
-}
-
 @media only screen and (min-width: 750px) {
   #skillsH3,
   .biopic {
@@ -214,6 +172,118 @@ span {
   }
 }
 
+/* GG edits below */
+html {
+  font-size:16px;
+  font-family: 'Lato', sans-serif;
+}
+body {
+  background-image: url('../images/tweed.png');
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+h1, h2, h3, h4, h5 {
+  font-family: 'Syncopate', sans-serif;
+}
+h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #999999;
+  /*line-height: 29px;*/
+}
+
 #main {
   visibility: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#workExperience, #education, #projects, #mapDiv {
+  /* bottom padding to match extent of padding top to top of h2 character */
+  padding:1rem 1rem 2.245rem 1rem;
+}
+
+#mapDiv {
+  height: 400px;
+  width: 100%;
+}
+
+
+#name {
+  font-size: 3rem;
+  color: #F5A623;
+  line-height: 2.5rem;
+  display: inline;
+  padding-right: .5rem;
+  margin-bottom: 0;
+}
+
+#name > span {
+  display: inline-block;
+  padding-left:1rem;
+  font-size:1rem;
+  font-family: 'Lato', sans-serif;
+}
+
+#name > hr {
+  margin: 0;
+  border: 1px solid #999;
+}
+
+li > span {
+  display:block;
+}
+
+.bg-head {
+  background-image:url("../images/me-standard-450.jpg");
+  background-repeat:no-repeat;
+  background-size:100%, 100%; /*contain;*/
+}
+
+.pad-sides {
+  padding:0 2rem;
+}
+
+.welcome-message {
+  color:#F5AE23;
+  padding:1rem 2rem 2rem 0;
+  font-family: 'Syncopate', sans-serif;
+  font-size: 1.17em;
+  font-weight: bold;
+  line-height:1.5em;
+}
+
+.bkg-work, .bkg-education, .bkg-projects, .bkg-map, .bkg-connect {
+  margin-top:2rem;
+}
+
+.bkg-work, .bkg-education {
+  /*background-color: hsla(38, 21%, 56%, 1);*/
+  background-color: hsla(31, 94%, 24%, 0.5);
+}
+
+.bkg-projects {
+  background-color: hsla(31, 93%, 42%, 0.5);
+
+}
+
+.bkg-map {
+
+}
+
+.bkg-connect {
+
+}
+
+ul {
+  line-height:1.5em;
+}
+
+li.flex-item {
+  padding:0 1em;
+  color:#666;
+}
+
+.slick-slide > img {
+  width: inherit;
 }
