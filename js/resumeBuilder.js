@@ -1,35 +1,104 @@
 /*
-	I was bothered by text jiggling while the page loaded. I first experimented with trying to minimize page rendering with multiple jQuery appends. I found that this can be done by detaching an element from the dom, building its contents and then appending the whole reconstructed element with a single append. Then had the idea that #main could be hidden and then made visible at a later time. After testing, it became apparent that the render was affected by how the map rendered. This led me to modify helper.js to determine when the markers had all been created.
+	I strove to eliminate text jiggling while the page loaded. I first experimented with trying to minimize page rendering with multiple jQuery appends. I found that this can be done by detaching an element from the dom, building its contents and then appending the whole reconstructed element with a single append. This led me to modify helper.js to determine when the markers had all been created. Finally made ui more friendly with a spinner and fades.
 
-	My interest in learning flexbox lead to how I'll modify the css for this project. In order to use flexboxgrid.css, I need to wrap each div that demarcates a section of information in a div with class="row". I can detach elements and append later as needed to modify the html.
-*/
-/*
-	TODO: encapsulate global vars into an object. create loading indicator. modify css. add carousel for images. create svg charts.
+	This project utilizes two plugins:
+		fullPage.js by Alvaro Trigo - https://github.com/alvarotrigo/fullPage.js
+		slick by Ken Wheeler - https://github.com/kenwheeler/slick/
+
+	Note: there must be at least one location for the map for the page to render properly.
 */
 
-var numLocations = 0,
+//global vars map, numLocations and markersCreated needed for helper.js to monitor when map is ready
+var map,
+		numLocations = 0,
 		markersCreated = 0,
 		replaceable = "%data%",
-		rowHtml = '<div class="row"></div>',
-		colFullHtml = '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">',
-		colProjectsHtml = '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bkg-projects">',
-		colWorkHtml = '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bkg-work">',
-		colEducationHtml = '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bkg-education">',
-		colSkillHtml = '<div class="col-xs-12 col-sm-12 col-md-5 col-lg-6">',
-		colMapHtml = '<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 bkg-map">',
-		colConnectHtml = '<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 bkg-connect">',
-		$main = $("#main"),
-		$workExperience = $('#workExperience').detach(),
-		$projects = $('#projects').detach(),
-		$education = $('#education').detach(),
-		$topContacts = $('#topContacts').detach(),
-		$header = $('#header').detach(),
-		$footer = $('#letsConnect').detach(),
-		$map = $('#mapDiv').detach(); //needed for flexboxgrid.css
+		$main = $("#main").detach();
+
+var builder = {
+	showMap: true,
+	anchors: ['header', 'work', 'projects', 'education', 'whereabouts', 'connect'],
+
+	/*
+	hiding code originally found in index.html emulated here for the fullPage.js interface by modifying what goes into the sections, content may be empty save the background image
+	*/
+	assessContents: function() {
+    //header. at minimum display name and role
+    if (document.getElementById('idheader').getElementsByClassName('cell')[0].children.length === 0) {
+      document.getElementById('idheader').style.display = 'none';
+    }
+
+    //work experience
+    if (!document.getElementById('idwork').getElementsByClassName('row')[0]) {
+      $('#idwork').hide();
+    }
+
+    //projects
+    if (!document.getElementById('idprojects').getElementsByClassName('fp-slides')) {
+      $('#idprojects').hide();
+    }
+
+    //education
+    var elEd = document.getElementById('ideducation'),
+    		elEd0 = document.getElementById('ideducation').getElementsByClassName('cell')[0],
+        elEd1 = document.getElementById('ideducation').getElementsByClassName('cell')[1];
+    if (elEd0.children.length === 1 && elEd1.children.length === 1) {
+      elEd.style.display = 'none';
+    } else {
+      if (elEd0.children.length === 1) {
+      	console.log('hiding elEd0', elEd0);
+        elEd0.style.display = 'none';
+      }
+      if (elEd1.children.length === 1) {
+        elEd1.style.display = 'none';
+      }
+    }
+
+    //map
+    if(document.getElementById('map') === null) {
+      $('#idwhereabouts').hide();
+    }
+
+    //connect
+    if(document.getElementById('contacts') === null) {
+      $('#idconnect').hide(); //detach so no scrolling past empty section
+    }
+	},
+
+	displayMap: function() {
+		// Google Maps is appended to the correct div in index.html, using a JQuery selector. //
+		$('#idwhereabouts').append(googleMap);
+		initializeMap(); //pulled from helper.js
+ 	},
+
+	build: function() {
+		bio.display();
+		work.display();
+		education.display();
+		projects.display();
+		$('body').append($main);
+
+		//displayMap call must occur after $main appended to body
+		if (this.showMap) this.displayMap(); //use flag to determine whether to display map
+		this.assessContents();
+		if (!this.showMap) this.showMain(); //if no map, make the call to showMain here
+	},
+
+	//To get a non-jiggly render, wait for it a bit. fade for ui nicety
+	showMain: function() {
+		//console.log('builder.showMain');
+		setTimeout(function() {
+			$('#spinner').hide('slow');
+			$('#menu').fadeTo('slow', 1.0, 'linear');
+			$main.fadeTo('slow', 1.0, 'linear');
+		}, 500);
+	}
+};
 
 var bio = {
 	"name": "fffplok",
 	"role": "Front End Web Developer",
+
 	"contacts": {
 		"mobile": "XXX-XXX-XXXX",
 		"email": "XXX@wxyzmail.com",
@@ -37,86 +106,54 @@ var bio = {
 		"twitter": "@XXX",
 		"location": "Osceola, WI"
 	},
+
 	"welcomeMessage": "fffplok, you say? Hello! I'm a specialist in developing interactive eLearning.",
 	"skills": [
 		"html", "css", "javascript", "jquery", "svg", "git/github", "bootstrap", "handlebars"
 	],
+
 	"bioPic": "images/me-standard-450.jpg"
 };
 
+//bio data is displayed in the header section and the lets connect section
 bio.display = function() {
-	//var topContacts = $header.find('#topContacts'),
-	var footerContacts = $footer.find('#footerContacts'),
-			colHeadHalfHtml = '<div class="col-xs-6">',
-			$headLeft = $('<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 bg-head">'),
-			$headRight = $('<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 pad-sides">'),
-			$headRightTop = $('<div class="col-xs-12">'),
-			$headTopRow = $(rowHtml),
-			$headBottomRow = $(rowHtml),
-			$headBottomLeft = $(colHeadHalfHtml),
-			$headBottomRight = $(colHeadHalfHtml),
-			htmlContent = "",
-			contacts = this.contacts,
-			skills = this.skills,
-			ix, start, $row;
+	//create jquery objects for dom manipulation. we need access to header and connect sections
+	var $connect = $main.find('#idconnect'),
+			cells =	$main.find('#idheader').find('.cell'),
+			$contacts, contacts = [], i;
 
-	//update class attributes. header now becomes a row
-	$header.removeClass('clearfix').removeClass('center-content').addClass('row');
+	if (this.contacts) {
+		$contacts = $(HTMLcontactList).append(HTMLmobile.replace(replaceable, this.contacts.mobile))
+									.append(HTMLemail.replace(replaceable, this.contacts.email))
+									.append(HTMLgithub.replace(replaceable, this.contacts.github))
+									.append(HTMLtwitter.replace(replaceable, this.contacts.twitter))
+									.append(HTMLlocation.replace(replaceable, this.contacts.location));
 
-	//get bioPic and put it into its column and append to header
-	//or, header left box gets the image
-	/*
-		ignore image, use background image (.bg-head). this is because ie11 stretched the image. Used the same responsive image css as bootstrap, so it seems that the issue with ie11 is that the css height:auto; is ignored when in a flex item
-	*/
-	//htmlContent = HTMLbioPic.replace(replaceable, bio.bioPic);
-	//$headLeft.append($(htmlContent));
-	$header.append($headLeft);
-
-	//build header right box. it contains two rows. top row contains name/role/contacts. bottom row contains two boxes: message and skills
-
-	htmlContent = '';
-	htmlContent = HTMLheaderName.replace(replaceable, bio.name)
-								+ HTMLheaderRole.replace(replaceable, bio.role);
-	htmlContent = htmlContent.replace('</h1>','') + '</h1>';
-	console.log('htmlContent: ', htmlContent);
-
-	//$header.append($(colHeadRightHtml).append($(rowHtml).append($(colNameHtml).append(htmlContent))));
-	//$headRight.append($(rowHtml).append($headRightTop.append(htmlContent)));
-	$headRightTop.append(htmlContent);
-
-	//contacts list items created and appended to header and footer
-	htmlContent = '';
-	if (bio.contacts) {
-		for (ix in contacts) {
-			htmlContent += HTMLcontactGeneric.replace("%contact%", ix).replace(replaceable,contacts[ix]);
-		}
-
-		$headRightTop.append($topContacts.append(htmlContent));
-
-		$headRight.append($headTopRow.append($headRightTop));
-		$header.append($headRight);
-		footerContacts.append(htmlContent);
+		//contacts to connect section
+		$connect.append($contacts);
 	}
 
-
-	$headBottomRow.append($headBottomLeft.append(HTMLWelcomeMsg.replace(replaceable, bio.welcomeMessage)));
-	$headBottomRow.append($headBottomRight);
-	$headRight.append($headBottomRow);
-
-	if (skills && skills.length > 0) {
-		start = $(HTMLskillsStart);
-		//$header.append(start);
-		$headBottomRight.append(start);
-
-		htmlContent = "";
-		for (ix in skills) {
-			htmlContent += HTMLskills.replace(replaceable, skills[ix]);
-		}
-
-		$headBottomRight.find('ul#skills').append(htmlContent);
-		$headBottomRow.append($headBottomRight);
-
+	//header section contains two cells. build first cell: name, role, message, skills
+	$(cells[0]).append($(HTMLheaderName.replace(replaceable,this.name)).append(HTMLheaderRole.replace(replaceable,this.role)));
+	if (this.welcomeMessage) {
+		$(cells[0]).append(HTMLWelcomeMsg.replace(replaceable,this.welcomeMessage));
+	} else {
+		$(cells[0]).append('<p></p>'); //empty paragraph to get line seperator
 	}
+
+	if (this.skills) {
+		$(cells[0]).append(HTMLskillsStart);
+
+		//build skills list
+		var $skillsList = $(cells[0]).find('#skills');
+
+		for (i = 0; i < this.skills.length; i++) {
+			$skillsList.append(HTMLskills.replace(replaceable,this.skills[i]));
+		}
+	}
+
+	//biopic to second cell of header
+	if (this.bioPic) $(cells[1]).append(HTMLbioPic.replace(replaceable, this.bioPic));
 };
 
 var work = {
@@ -146,33 +183,32 @@ var work = {
 };
 
 work.display = function() {
-	//build contents of the div and then re-attach to the dom.
-	var jobs = this.jobs,
-			ix, start, htmlContent;
+	//create jquery objects for dom manipulation. we need access to work section
+	var $work = $main.find('#idwork'),
+			i, $row, $cell, $workDates; /*, htmlLocDate, htmlEmployTitle, htmlDesc, htmlContent;*/
 
-	//remove unused classes
-	$workExperience.removeClass('gray');
+	if (this.jobs) {
+		//there are two cells for every row in the work section
+		for (i = 0; i < this.jobs.length; i++) {
+			//append row every two cells
+			if (i % 2 === 0) {
+				$row = $(HTMLworkRow);
+				$work.append($row);
+			}
 
-	if (jobs.length > 0) {
-		for (ix in jobs) {
-			start = $(HTMLworkStart);
-			htmlContent = HTMLworkEmployer.replace(replaceable, jobs[ix].employer)
-										+ HTMLworkTitle.replace(replaceable, jobs[ix].title)
-										+ HTMLworkLocation.replace(replaceable, jobs[ix].location)
-										+ HTMLworkDates.replace(replaceable, jobs[ix].dates)
-										+ HTMLworkDescription.replace(replaceable, jobs[ix].description);
+			//build cell and append it to the current row
+			$cell = $(HTMLcell);
 
-			start.append($(htmlContent));
-			$workExperience.append(start);
+			//span for dates appended to the paragraph that contains location
+			$workDates = $(HTMLworkLocation.replace(replaceable, this.jobs[i].location)).append(HTMLworkDates.replace(replaceable, this.jobs[i].dates));
+
+			$cell.append(HTMLworkEmployer.replace(replaceable, this.jobs[i].employer) + HTMLworkTitle.replace(replaceable, this.jobs[i].title));
+			$cell.append($workDates).append(HTMLworkDescription.replace(replaceable, this.jobs[i].description));
+
+			$row.append($cell);
 		}
-
-		//use this when not using flexboxgrid.css
-		//$main.prepend($workExperience);
-
-		//use with flexboxgrid.css
-		//$main.prepend($(rowHtml).append($workExperience));
 	}
-}
+};
 
 var projects = {
 	"projects": [
@@ -181,108 +217,142 @@ var projects = {
 			"dates": "2013",
 			"description": "Scorm 1.2 compliant eLearning. Integrated multiple interactions including quizzes, click-tell, tip behavior into online course targeted for iPad users. Developed restricted navigation so that user is required to visit every aspect of an interaction before proceeding to the next.",
 			"images": [
-				"images/gm-01-click-tell.jpg",
-				"images/gm-02-tip.jpg",
-				"images/gm-03-quiz.jpg",
-				"images/gm-04-menu.jpg",
-				"images/gm-05-glossary.jpg",
-				"images/gm-05-resume.jpg"
-			],
-			"carouselClass":"responsive"
+				{
+					"img":"images/gm-00-open.jpg",
+					"feedback":"Opening view of the course. Learner progress is at 0%. Once begun, Learner may resume at beginning or most recent page viewed."
+				},
+				{
+					"img":"images/gm-01-click-tell.jpg",
+					"feedback":"The click-tell interaction. Tap a label and see some information. You know the drill."
+				},
+				{
+					"img":"images/gm-02-tip.jpg",
+					"feedback":"Feedback modal superimposed over an interaction."
+				},
+				{
+					"img":"images/gm-03-quiz.jpg",
+					"feedback":"Quiz in a single page interface. Here showing feedback to a radio button selection."
+				},
+				{
+					"img":"images/gm-05-glossary.jpg",
+					"feedback":"Glossary allows simple search of course related terms."
+				}
+			]
 		},
 		{
 			"title": "eLearning Pharmaceutical Sales",
 			"dates": "2014",
-			"description": "Scorm 1.2 compliant eLearning. Integrated multiple interactions including quizzes, click-tell, grid select into online course targeted for iPad users. Integrated both audio and video elements to interactions. Unified css for the various interactions. Developed custom quiz with supplemental questions when initial response is incorrrect. Developed matching interaction with svg.",
+			"description": "Scorm 1.2 compliant eLearning. Integrated multiple interactions into online course targeted for iPad users. Integrated audio into main navigation and individual interactions. Unified css for the various interactions. Developed custom quiz with supplemental questions when initial response is incorrect. Developed matching interaction with svg.",
 			"images": [
-				"images/ro-00-open.jpg",
-				"images/ro-01-open-info.jpg",
-				"images/ro-02-grid-radio-start.jpg",
-				"images/ro-03-grid-radio-try1.jpg",
-				"images/ro-04-grid-radio-try2.jpg",
-				"images/ro-05-click-tell.jpg",
-				"images/ro-06-grid-checkbox.jpg",
-				"images/ro-07-click-tell2.jpg",
-				"images/ro-08-slider.jpg",
-				"images/ro-09-quiz.jpg",
-				"images/ro-10-quiz-radio-selected.jpg",
-				"images/ro-11-quiz-feedback.jpg",
-				"images/ro-12-accordion-closed.jpg",
-				"images/ro-13-accordion-open.jpg",
-				"images/ro-14-menu-expanded.jpg",
-				"images/ro-15-matching-entry.jpg",
-				"images/ro-16-matching-try1.jpg",
-				"images/ro-17-matching-try1-feedback.jpg",
-				"images/ro-18-matching-try1-answer-shown.jpg",
-				"images/ro-19-matching-restarted.jpg",
-				"images/ro-20-scenario-intro.jpg",
-				"images/ro-21-scenario-q.jpg",
-				"images/ro-22-scenario-q-selected.jpg",
-				"images/ro-23-scenario-q-wrong.jpg",
-				"images/ro-24-scenario-try2-ok-new-q.jpg",
-				"images/ro-25-scenario-q2-wrong-try1.jpg",
-				"images/ro-26-scenario-q2-wrong-try2.jpg",
-				"images/ro-27-scenario-summary.jpg"
-			],
-			"carouselClass":"responsive"
-		} /*,
+				{
+					"img":"images/ro-04-grid-radio-try2.jpg",
+					"feedback":"Grid radio checklist. One radio button per row may be selected. Correct answers are shown with feedback when response is submitted."
+				},
+				{
+					"img":"images/ro-14-menu-expanded.jpg",
+					"feedback":"Menu expanded to show all pages have been viewed for the topic selected."
+				},
+				{
+					"img":"images/ro-15-matching-entry.jpg",
+					"feedback":"Matching interaction. Items in left column must be correctly matched to item in right column."
+				},
+				{
+					"img":"images/ro-17-matching-try1-feedback.jpg",
+					"feedback":"Learner has matched each pair by clicking or tapping sequentially. A line is drawn with svg to connect the pairs selected. When answer is checked (as shown here) any incorrect matches are grayed out."
+				},
+				{
+					"img":"images/ro-18-matching-try1-answer-shown.jpg",
+					"feedback":"The matching interaction allows learner to see the correct matches following feedback noting some incorrect pairs."
+				},
+				{
+					"img":"images/ro-21-scenario-q.jpg",
+					"feedback":"Scenario interaction with audio introduction and feedback. When initial question is incorrectly answered, a supplemental question is presented. Here is the view of an initial question."
+				},
+				{
+					"img":"images/ro-23-scenario-q-wrong.jpg",
+					"feedback":"Scenario showing feedback to an incorrect response."
+				},
+				{
+					"img":"images/ro-27-scenario-summary.jpg",
+					"feedback":"Scenario summary view."
+				}
+			]
+		} ,
 		{
 			"title": "Tree House",
 			"dates": "2012",
 			"description": "A lovely treehouse nestled in the woods overlooking the road.",
-			"images": []
+			"images": ["images/treehouse.jpg"]
 		}
-		*/
 	]
 };
 
 projects.display = function() {
-	//note this.projects is the array of project objects
+	//create jquery objects for dom manipulation. we need access to projects section
+	var $projects = $main.find('#idprojects'),
+			$cell, $row, $container, $slide,
+			i, j, project, htmlContent;
 
-	//make minimal impact to dom by first detaching the div with id "projects".
-	//build contents of the div and then re-attach to the dom.
-	var projects = this.projects,
-			ix, i, start, htmlContent;
+	//for each project, we create a slide. a slide contains a header followed by one or two rows
+	if (this.projects) {
+		for (i = 0; i < this.projects.length; i++) {
+			project = this.projects[i];
 
-	if (projects.length > 0) {
-		for (ix in projects) {
-			start = $(HTMLprojectStart);
-			htmlContent = HTMLprojectTitle.replace(replaceable, projects[ix].title)
-										+ HTMLprojectDates.replace(replaceable, projects[ix].dates)
-										+ HTMLprojectDescription.replace(replaceable, projects[ix].description);
+			//header appended to container
+			$container = $(HTMLprojectStart).append(HTMLprojectHeader);
 
-			start.append($(htmlContent));
-			/*
-			// static images
-			if (projects[ix].images.length > 0) {
-				for (i = 0; i < projects[ix].images.length; i++) {
-					start.last().append($(HTMLprojectImage.replace(replaceable, projects[ix].images[i])));
+			//first row populated and appended to container
+			$row = $(HTMLrow);
+			htmlContent = HTMLprojectDates.replace(replaceable, project.dates) + HTMLprojectTitle.replace(replaceable, project.title)	+ HTMLprojectDescription.replace(replaceable, project.description);
+
+			$row.append(htmlContent);
+			$container.append($row);
+
+			//determine if there will be a second row, build and append to container if so. if there is an images object, there'll be a second row. the second row may one or two cells
+			if (project.images) {
+				htmlContent = '';
+				$row = $(HTMLrow);
+				$cell = $(HTMLcell);
+
+				//single image
+				if (project.images.length <= 1) {
+					htmlContent += HTMLprojectImage.replace(replaceable, project.images[0]);
+					$cell.append(htmlContent);
+				} else {
+					//multiple images (in carousel)
+
+					//important. need identifier for managing feedback
+					$row.attr('id',' car-'+i);
+
+					for (j = 0; j < project.images.length; j++) {
+						htmlContent += HTMLprojectImage.replace(replaceable, project.images[j].img);
+					}
+					$cell.append($(HTMLprojectFade).append(htmlContent));
 				}
-			}
-			*/
-			if (projects[ix].images.length > 0) {
-				var $carouselStart = $('<div class="'+projects[ix].carouselClass+'"></div>');
-				console.log('$carouselStart: ', $carouselStart);
-				for (i = 0; i < projects[ix].images.length; i++) {
-					$carouselStart.append('<div>'+HTMLprojectImage.replace(replaceable, projects[ix].images[i])+'</div>');
+				$row.append($cell);
+
+				//determine if there is a second cell. carousel will use per image feedback. single image option requires a top level feedback object for addtional text
+				if (project.images.length > 1 || project.feedback) {
+					$cell = $(HTMLcellFeedback);
+					if (project.feedback) {
+						$cell.find('p').append(project.feedback);
+					} else {
+						//feedback for first image in carousel
+						$cell.find('p').append(project.images[0].feedback);
+					}
+					$row.append($cell);
 				}
-				start.last().append($carouselStart);
+
+				//append second row
+				$container.append($row);
 			}
 
-			/*
-			//html for the slick carousel
-	    <div class="responsive">
-	      <div><img src="img/ro-00-open.jpg"></div>
-	      <div><img src="img/ro-02-grid-radio-start.jpg"></div>
-	      ...
-	    </div>
-			*/
+			//append container to slide
+			$slide = $(HTMLprojectSlide).append($container);
 
-			$projects.append(start);
+			//append slide to projects (multi-slide view)
+			$projects.append($slide);
 		}
-
-		//$main.prepend($projects);
-		//$main.prepend($(rowHtml).append($projects));
 	}
 };
 
@@ -301,6 +371,7 @@ var education = {
 		}
 
 	],
+
 	"onlineCourses": [
 		{
 			"title": "Intro to HTML and CSS",
@@ -331,131 +402,92 @@ var education = {
 };
 
 education.display = function() {
-	//remove unused classes
-	$education.removeClass('gray');
-
-	//build contents of the div and then re-attach to the dom.
-	var	schools = this.schools,
+	//create jquery objects for dom manipulation. we need access to cells of the education section
+	var cells = $main.find('#ideducation').find('.cell'),
+			schools = this.schools,
 			onlineCourses = this.onlineCourses,
-			ix, htmlContent;
+			i, start, htmlContent;
 
+	//first cell contains divs with traditional courses
 	if (schools && schools.length > 0)	{
-		for (ix in schools) {
+		for (i = 0; i < schools.length; i++) {
 			start = $(HTMLschoolStart);
-			htmlContent = HTMLschoolName.replace(replaceable, schools[ix].name)
-										+ HTMLschoolDegree.replace(replaceable, schools[ix].degree)
-										+ HTMLschoolDates.replace(replaceable, schools[ix].dates)
-										+ HTMLschoolLocation.replace(replaceable, schools[ix].location)
-										+ HTMLschoolMajor.replace(replaceable, schools[ix].majors.join(", "));
+			htmlContent = HTMLschoolName.replace(replaceable, schools[i].name) + HTMLschoolDegree.replace(replaceable, schools[i].degree) + HTMLschoolDates.replace(replaceable, schools[i].dates) + HTMLschoolLocation.replace(replaceable, schools[i].location) + HTMLschoolMajor.replace(replaceable, schools[i].majors.join(", "));
 
 			start.append($(htmlContent));
-			$education.append(start);
+			$(cells[0]).append(start);
 		}
 	}
 
+	//second cell contains divs with online courses
 	if (onlineCourses && onlineCourses.length > 0)	{
-		$education.append($(HTMLonlineClasses));
-
-		for (ix in onlineCourses) {
+		for (i= 0; i < onlineCourses.length; i++) {
 			start = $(HTMLschoolStart);
-			htmlContent = HTMLonlineTitle.replace(replaceable, onlineCourses[ix].title)
-										+ HTMLonlineSchool.replace(replaceable, onlineCourses[ix].school)
-										+ HTMLonlineDates.replace(replaceable, onlineCourses[ix].date)
-										+ HTMLonlineURL.replace(replaceable, onlineCourses[ix].url);
+			htmlContent = HTMLonlineTitle.replace(replaceable, onlineCourses[i].title) + HTMLonlineSchool.replace(replaceable, onlineCourses[i].school) + HTMLonlineDates.replace(replaceable, onlineCourses[i].date) + HTMLonlineURL.replace(replaceable, onlineCourses[i].url);
 
 			start.append($(htmlContent));
-			$education.append(start);
+			$(cells[1]).append(start);
 		}
-
-		//$main.prepend($education);
-		//$main.prepend($(rowHtml).append($education));
 	}
 };
 
-var theMap = {
-	display: function() {
-		$map.append(googleMap)
-		//$main.append($map.append(googleMap));
-	}
-}
+//Plugin intialization
+$(document).ready(function() {
+	builder.build();
+
+	//initialize fullpage, then slick
+	$main.fullpage({
+		menu: '#menu',
+		anchors: builder.anchors, //['header', 'work', 'projects', 'education', 'whereabouts', 'connect'],
+		slidesNavPosition: 'top', //values allowed: top, bottom
+		loopHorizontal: false, //projects scroll horizontally, stop when at first or last
+		autoScrolling: true, //we do want to hide native scrollbars
+		navigation: false, //don't want the dots
+
+		//intialize slick after fullpage
+		afterRender: function(){
+		  //here initialize other plugins
+		  $('.fade').slick({
+				dots: true,
+				infinite: true,
+				speed: 500,
+				fade: true,
+				cssEase: 'linear'
+		  });
+
+		  //before slide change
+		  $('.fade').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+				//traverse to row that has id we can use to get index into projects
+				var targForId = $(this).parent().parent();
+
+				//get the feedback cell and fade out
+				$(targForId.find('.cell')[1]).find('p').fadeOut();
+		  });
+
+		  //after slide change
+		  $('.fade').on('afterChange', function(event, slick, currentSlide){
+				//traverse to row that has id we can use to get index into projects
+				var targForId = $(this).parent().parent();
+
+				//get the feedback cell and index to correct project
+				var targCell = targForId.find('.cell')[1];
+				var ix = parseInt($(targForId).attr('id').slice(5), 10); //id of form 'car-N'
+
+				//update feedback
+				$(targCell).html('<p>' + projects.projects[ix].images[currentSlide].feedback + '</p>').fadeIn();
+		  });
+		}
+
+	});
+
+});
 
 // The click() function makes it possible for console.log() to output grid coordinates for wherever the screen is clicked. //
 $(document).click(function(evt) {
 	logClicks(evt.pageX, evt.pageY);
 });
 
-// Google Maps is appended to the correct div in index.html, using a JQuery selector. //
-//console.log('append googleMap');
-//$("#mapDiv").append(googleMap);
-
-//run the program (after spaghetti cleaned up)
-//get rid of unnecessary div (<div style='clear: both;'></div>). at this time it is the only child of $main
-$main.children().remove();
-
-theMap.display();
-projects.display();
-education.display();
-work.display();
-bio.display();
-
-//attach rows to dom from bottom up
-$main.append($(rowHtml).append($(colMapHtml).append($map)).append($(colConnectHtml).append($footer)));
-
-$main.prepend($(rowHtml).append($(colProjectsHtml).append($projects)));
-
-$main.prepend($(rowHtml).append($(colWorkHtml).append($workExperience)).append($(colEducationHtml).append($education)));
-
-$main.prepend($(rowHtml).append($(colFullHtml).append($header)));
-
-      $('.responsive').slick({
-        dots: true, //true
-        infinite: true,
-        speed: 300,
-        slidesToShow: 4,
-        slidesToScroll: 4,
-        responsive: [
-          {
-            breakpoint: 1200,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 3,
-              infinite: true
-            }
-          },
-          {
-            breakpoint: 992,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 768,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-          // You can unslick at a given breakpoint now by adding:
-          // settings: "unslick"
-          // instead of a settings object
-        ]
-      });
-
-//To get a non-jiggly render, wait for it a bit.
-function showMain() {
-	setTimeout(function() { $main.css('visibility','visible');}, 500);
-}
-
-
 //prevent empty links from scrolling to top of page but allow clicks to be logged
 $('a[href="#"]').click(function(e){
 	e.preventDefault();
 });
-
-/*
-//same as $(document).ready(function(){});
-$(function() {
-
-});
-*/

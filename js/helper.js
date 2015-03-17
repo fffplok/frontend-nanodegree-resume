@@ -12,9 +12,36 @@ Cameron Pittman
 These are HTML strings. As part of the course, you'll be using JavaScript functions
 replace the %data% placeholder text you see in them.
 */
+
+/*
+GG code. Some HTML strings modified for use with ui/plugins deployed. others added. originals left commented out.
+*/
+var HTMLheaderName = '<h1>%data%</h1>';
+var HTMLheaderRole = '<span>%data%</span>';
+var HTMLskillsStart = '<h3>Skills at a Glance:</h3><ul id="skills"></ul>';
+var HTMLskills = '<li>%data%</li>';
+var HTMLbioPic = '<img src="%data%">';
+var HTMLWelcomeMsg = '<p>%data%</p>';
+
+/*
 var HTMLheaderName = '<h1 id="name">%data%</h1>';
 var HTMLheaderRole = '<span>%data%</span><hr/>';
 
+var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
+var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
+
+var HTMLbioPic = '<img src="%data%" class="biopic">';
+var HTMLWelcomeMsg = '<span class="welcome-message">%data%</span>';
+*/
+
+var HTMLcontactList = '<ul id="contacts"></ul>';
+var HTMLmobile = '<li>mobile<span>%data%</span></li>';
+var HTMLemail = '<li>email<span>%data%</span></li>';
+var HTMLgithub = '<li>github<span>%data%</span></li>';
+var HTMLtwitter = '<li>twitter<span>%data%</span></li>';
+var HTMLblog = '<li>blog<span>%data%</span></li>';
+var HTMLlocation = '<li>location<span>%data%</span></li>';
+/*
 var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
 var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
 var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
@@ -22,26 +49,58 @@ var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span
 var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
 var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
 var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
+*/
 
-var HTMLbioPic = '<img src="%data%" class="biopic">';
-var HTMLWelcomeMsg = '<span class="welcome-message">%data%</span>';
+var HTMLrow = '<div class="row"></div>';
+var HTMLcell = '<div class="cell"></div>';
+var HTMLcellFeedback = '<div class="feedback cell"><p></p></div>';
 
-var HTMLskillsStart = '<h3 id="skillsH3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
-var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
+var HTMLworkRow = '<div class="work-entry row"></div>';
+var HTMLworkEmployer = '<a href="#">%data%';
+var HTMLworkTitle = ' - %data%</a>';
+var HTMLworkDates = '<span class="date-text">%data%</span>';
+var HTMLworkLocation = '<p class="location-text">%data%</p>';
+var HTMLworkDescription = '<p>%data%</p>';
 
+/*
 var HTMLworkStart = '<div class="work-entry"></div>';
 var HTMLworkEmployer = '<a href="#">%data%';
 var HTMLworkTitle = ' - %data%</a>';
 var HTMLworkDates = '<div class="date-text">%data%</div>';
 var HTMLworkLocation = '<div class="location-text">%data%</div>';
 var HTMLworkDescription = '<p><br>%data%</p>';
+*/
 
+var HTMLprojectSlide = '<div class="slide"></div>';
+var HTMLprojectStart = '<div class="project-entry container"></div>';
+var HTMLprojectHeader = '<h2>Project</h2>';
+var HTMLprojectDates = '<span class="date-text">%data%</span>'; //NB, SAME AS HTMLworkDates
+var HTMLprojectTitle = '<a href="#">%data%</a>';
+var HTMLprojectDescription = '<p>%data%</p>';
+//var HTMLprojectImage = '<img src="%data%">'; //for isolated images
+var HTMLprojectFade = '<div class="fade"></div>';
+var HTMLprojectImage = '<div><img src="%data%"></div>';
+
+/*
 var HTMLprojectStart = '<div class="project-entry"></div>';
 var HTMLprojectTitle = '<a href="#">%data%</a>';
 var HTMLprojectDates = '<div class="date-text">%data%</div>';
 var HTMLprojectDescription = '<p><br>%data%</p>';
 var HTMLprojectImage = '<img src="%data%">';
+*/
 
+var HTMLschoolStart = '<div class="education-entry"></div>';
+var HTMLschoolName = '<a href="#">%data%';
+var HTMLschoolDegree = ' -- %data%</a>';
+var HTMLschoolLocation = '<p class="location-text">%data%</p>';
+var HTMLschoolDates = '<span class="date-text">%data%</span>';
+var HTMLschoolMajor = '<p>Major: %data%</p>';
+
+var HTMLonlineTitle = '<a href="#">%data%';
+var HTMLonlineSchool = ' - %data%</a>';
+var HTMLonlineDates = '<div class="date-text">%data%</div>';
+var HTMLonlineURL = '<a href="#">%data%</a>';
+/*
 var HTMLschoolStart = '<div class="education-entry"></div>';
 var HTMLschoolName = '<a href="#">%data%';
 var HTMLschoolDegree = ' -- %data%</a>';
@@ -54,7 +113,7 @@ var HTMLonlineTitle = '<a href="#">%data%';
 var HTMLonlineSchool = ' - %data%</a>';
 var HTMLonlineDates = '<div class="date-text">%data%</div>';
 var HTMLonlineURL = '<br><a href="#">%data%</a>';
-
+*/
 var internationalizeButton = '<button>Internationalize</button>';
 var googleMap = '<div id="map"></div>';
 
@@ -62,6 +121,7 @@ var googleMap = '<div id="map"></div>';
 /*
 The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
 */
+/* //not a part of rubric for final submission.
 $(document).ready(function() {
   console.log('$(document).ready!');
   $('button').click(function() {
@@ -69,7 +129,7 @@ $(document).ready(function() {
     $('#name').html(iName);
   });
 });
-
+*/
 /*
 The next few lines about clicks are for the Collecting Click Locations quiz in Lesson 2.
 */
@@ -96,14 +156,12 @@ This is the fun part. Here's where we generate the custom Google Map for the web
 See the documentation below for more details.
 https://developers.google.com/maps/documentation/javascript/reference
 */
-var map;    // declares a global map variable
-
 
 /*
 Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
-  console.log('initializeMap');
+  //console.log('initializeMap');
 
   var locations;
 
@@ -126,7 +184,7 @@ function initializeMap() {
     var locations = [];
 
     // adds the single location property from bio to the locations array
-    locations.push(bio.contacts.location);
+    if (bio.contacts) locations.push(bio.contacts.location);
 
     // iterates through school locations and appends each location to
     // the locations array
@@ -189,8 +247,8 @@ function initializeMap() {
 
     //GG code. reveal main when all markers have been created
     ++markersCreated;
-    if (markersCreated >= numLocations) {
-      showMain();
+    if (numLocations && markersCreated >= numLocations) {
+      builder.showMain(); //wait til we've got all markers
     }
   }
 
@@ -245,12 +303,14 @@ Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-window.addEventListener('load', initializeMap);
+//window.addEventListener('load', initializeMap); //orig
+//GG code. In resumeBuilder builder.displayMap now makes call to initializeMap
 
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
 window.addEventListener('resize', function(e) {
   //Make sure the map bounds get updated on page resize
-  map.fitBounds(mapBounds);
+  if (map) map.fitBounds(mapBounds);
+  //map.fitBounds(mapBounds); //orig
 });

@@ -1,99 +1,112 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<!--
-This is an HTML document. It contains information about how elements in the website
-are arranged. In other words, it describes the layout of a website.
-
-I can't wait to see the resumes you put together!
-
-Cameron Pittman, Udacity Course Developer
--->
-
-<!--
-The <head> of a website generally links to important resources the page will
-need to load. You'll see a lot of <link>s to CSS files for styles and
-<scripts> for JavaScript files to build interactions.
--->
 <head>
-  <!-- This tells the browser how to read the document. -->
-  <meta charset="utf-8">
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height" id="vp">
+  <script>
+    //if landscape orientation choose innerWidth, otherwise innerHeight as width value
+    var w = (window.innerWidth > window.innerHeight) ? window.innerWidth : window.innerHeight;
+    //adjust viewport scale
+    if (w < 768) {
+      document.getElementById('vp').setAttribute('content','width=device-width, initial-scale=0.5, maximum-scale=0.5');
+    }
+   </script>
 
-  <!-- Tells the browser what the title of this page should be. -->
-  <title>Resume</title>
+	<title>Resume</title>
 
-  <!-- Load the page styles. -->
-  <link href='http://fonts.googleapis.com/css?family=Lato|Syncopate' rel='stylesheet' type='text/css'>
-  <!-- <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'> -->
-  <link href="css/normalize.css" rel="stylesheet" type="text/css">
-  <link href="css/flexboxgrid.css" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Lato|Syncopate" rel="stylesheet" type="text/css">
 
-  <!-- slick css (for carousel) -->
-  <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-  <!-- Add the new slick-theme.css if you want the default styling -->
-  <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+  <link rel="stylesheet" href="slick/slick.css">
+  <link rel="stylesheet" href="slick/slick-theme.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/jquery.fullPage.css" />
 
-  <link href="css/style.css" rel="stylesheet" type="text/css">
-
-  <!--
-  jQuery is a common JavaScript library for reading and making changes to the
-  Document Object Model (DOM). The DOM is a tree that contains information
-  about what is actually visible on a website.
-
-  While HTML is a static document, the browser converts HTML to the
-  DOM and the DOM can change. In fact, JavaScript's power comes from
-  its ability to manipulate the DOM, which is essentially a JavaScript
-  object. When JavaScript makes something interesting happen on a
-  website, it's likely the action happened because JavaScript changed
-  the DOM. jQuery is fast and easy to use, but it doesn't do anything
-  you can't accomplish with vanilla (regular) JavaScript.
-  -->
   <script src="js/jQuery.js"></script>
-
-  <!-- More on helper.js in the class -->
   <script src="js/helper.js"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
-  <!--
-  Uncomment the <script> tag below when you're ready to add an interactive
-  Google Map to your resume!
-  -->
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
-
-  <meta name="viewport" content="width=device-width">
+	<script src="js/jquery.fullPage.js"></script>
 </head>
-<body unresolved>
-  <div id="main">
 
-    <!--
-    Everything from here to the <script> tag below is the skeleton of your
-    website. Your code will add information to each of the sections of the
-    resume below. You can pretty easily figure out what each section will
-    display by looking at the id or at what's written between the <h2> tags.
-    -->
-    <div id="header" class="center-content clearfix">
-      <ul id="topContacts" class='flex-box'></ul>
+<body>
+  <!-- spinner displays while loading -->
+  <img id="spinner" src='slick/ajax-loader.gif' alt="spinner">
+
+  <!-- menu -->
+	<ul id="menu">
+		<li data-menuanchor="header" class="active"><a href="#header">greeting</a></li>
+		<li data-menuanchor="work"><a href="#work">work</a></li>
+    <li data-menuanchor="projects"><a href="#projects">projects</a></li>
+		<li data-menuanchor="education"><a href="#education">education</a></li>
+		<li data-menuanchor="whereabouts"><a href="#whereabouts">location</a></li>
+		<li data-menuanchor="connect"><a href="#connect">connect</a></li>
+	</ul>
+
+	<div id="main">
+
+    <!-- header -->
+    <div class="section" id="section0">
+    	<div class="container" id="idheader">
+
+    		<div class="cell">
+				</div>
+				<div class="cell">
+				</div>
+
+			</div>
     </div>
-    <div style='clear: both;'></div>
-    <div id="workExperience" class='gray'>
-      <h2>Work Experience</h2>
+
+    <!-- work experience -->
+    <div class="section" id="section1">
+    	<div class="container" id="idwork">
+	    	<h2>Work Experience</h2>
+      </div>
     </div>
-    <div id="projects">
-      <h2>Projects</h2>
+
+    <!-- projects -->
+    <div class="section" id="section2">
+      <div id="idprojects">
+      </div>
     </div>
-    <div id="education" class='gray'>
-      <h2>Education</h2>
+
+    <!-- education -->
+    <div class="section" id="section3">
+      <div class="container" id="ideducation">
+        <h2>Education</h2>
+        <div class="row">
+
+          <div class="cell">
+            <h3>Traditional</h3>
+          </div>
+
+          <div class="cell">
+            <h3>Online</h3>
+          </div>
+
+        </div>
+      </div>
     </div>
-    <div id="mapDiv">
-      <h2>Where I've Lived and Worked</h2>
+
+    <!-- map -->
+	  <div class="section" id="section4">
+    	<div class="container" id="idwhereabouts">
+    		<h2>Where I've Lived and Worked</h2>
+    	</div>
     </div>
-    <div id="letsConnect" class='dark-gray'>
-      <h2 class='orange center-text'>Let's Connect</h2>
-        <ul id="footerContacts" class="flex-box">
-      </ul>
+
+
+    <!-- connect -->
+    <div class="section" id="section5">
+    	<div class="container" id="idconnect">
+    		<h2>Let's Connect</h2>
+    	</div>
     </div>
-  </div>
+
+	</div>
 
   <!-- javascript for carousel -->
-  <script type="text/javascript" src="slick/slick.min.js"></script>
+	<script src="slick/slick.js"></script>
 
   <!--
   The next line tells the browser where to download the JavaScript file you'll be
@@ -101,7 +114,6 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
   dynamically when this website, index.html, is opened.
   -->
   <script src="js/resumeBuilder.js"></script>
-
 
   <!--
   These scripts are written in JavaScript. You'll be breaking them down as part of
@@ -111,6 +123,7 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
   course.
   -->
 
+  <!--
   <script type="text/javascript">
     // Notice how all of a sudden there's JavaScript inside this HTML
     // document? You can write JavaScript between <script> tags. At the end of your
@@ -126,14 +139,12 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
     */
 
 
-    if(document.getElementsByClassName('flex-item').length === 0) {
-      document.getElementById('topContacts').style.display = 'none';
-      //document.getElementById('topContacts').style.backgroundColor = 'black';
-    }
-    if(document.getElementsByTagName('h1').length === 0) {
-      document.getElementById('header').style.display = 'none';
-      // document.getElementById('header').style.backgroundColor = 'black';
-    }
+    //top contacts not used any more
+    //A further enhancement would be to hide menu button as well as section when the section is empty but that makes it difficult to work with the fullPage plugin's reliance on indexed identifier section0 .. sectionN
+
+    //hiding code may now be found in builder.assessContent in resumeBuilder.js
+
+    //original hiding code
     if(document.getElementsByClassName('work-entry').length === 0) {
       document.getElementById('workExperience').style.display = 'none';
       // document.getElementById('workExperience').style.backgroundColor = 'black';
@@ -150,11 +161,12 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
       document.getElementById('letsConnect').style.display = 'none';
       // document.getElementById('letsConnect').style.backgroundColor = 'black';
     }
-    console.log('do we have a map', document.getElementById('map'));
     if(document.getElementById('map') === null) {
       document.getElementById('mapDiv').style.display = 'none';
       // document.getElementById('mapDiv').style.backgroundColor = 'black';
     }
+
   </script>
+  -->
 </body>
 </html>

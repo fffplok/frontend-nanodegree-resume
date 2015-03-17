@@ -1,289 +1,379 @@
-.education-entry, .work-entry, .project-entry {
-  padding-left: 5%;
-  padding-right: 5%;
+html {
+  font-size: 18px; /*16px;*/
+  font-family: 'Lato', sans-serif;
+  background-color: #24282c;
 }
 
-h4 {
-  font-weight: bold;
-  font-size: 14px;
-  color: #4A4A4A;
-  line-height: 17px;
+body {
+  background-color: #24282c;
 }
 
-/*
-  h2, h3, h4, h5 {
-  padding:10px;
-  padding-left: 5%;
-  padding-right: 5%;
-}
-*/
-
-.date-text {
-  font-style: italic;
-  font-size: 14px;
-  color: #999999;
-  line-height: 16px;
-  float: left;
-}
-
-.location-text {
-  font-style: italic;
-  font-size: 14px;
-  color: #999999;
-  line-height: 16px;
-  float: right;
-
-}
-
-p {
-  font-size: 14px;
-  color: #333333;
-  line-height: 21px;
-}
-
-a {
-  color: #1199C3;
-  text-decoration: none;
-  margin-top: 10px;
-  display: block;
-}
-
-#skillsH3 {
-  display: none;
-  color: #666;
-  margin:0;
-  padding:1rem 0 0 0;
-}
-
-.orange {
-  background-color: #F5AE23;
-}
-/*
-.orange-text {
-  color: #F5AE23;
-}
-*/
-.white-text {
-  font-weight: bold;
-  color: #999; /*#FFFFFF;*/
-}
-/*
-.gray {
-  background-color: #F3F3F3;
-  padding-bottom: 10px;
-  clear:both;
-}
-*/
-.dark-gray {
-  background-color: #4A4A4A;
-}
-
-#header {
-  background-color: #484848;
-  background-image: url('../images/footer_lodyas.png');
-}
-
-.flex-box {
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: .5rem 1rem 1.5rem 0;  /*1.5rem; 10px;*/
-}
-/*
-.center-content {
-  padding-top: 2.5%;
-  padding-left: 5%;
-  padding-right: 5%;
-  padding-bottom: 2.5%
-}
-*/
 ul {
   list-style-type: none;
-  margin:0;
+  margin: 0;
 }
 
-.biopic {
-/*  float: left;
-  padding: 10px;
-  width: 200px;
-*/
-  display: none;
-  max-width:100%;
-  height:auto;
-}
-
-/* Bar chart stuff */
-.chart div {
-  font: 10px sans-serif;
-  background-color: #4A4A4A;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  height: 12px;
-  color: white;
-  display: inline-block;
-}
-/*
-span {
-  padding: 5px;
-}
-*/
-#letsConnect {
-  text-align: center;
-}
-
-@media only screen and (max-width: 1024px) {
-  #letsConnect {
-    margin-top: 5%;
-  }
-}
-
-@media only screen and (max-width:900px) {
-  .biopic {
-    width: 175px;
-  }
-}
-
-@media only screen and (max-width: 750px) {
-  #letsConnect {
-    margin-top: 10%;
-  }
-  .biopic {
-    width: 150px;
-  }
-  .welcome-message {
-    display: none;
-  }
-}
-
-#map {
-  display: block;
-  height: 100%;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
-@media only screen and (min-width: 750px) {
-  #skillsH3,
-  .biopic {
-    display: block;
-  }
-}
-
-/* GG edits below */
-html {
-  font-size:16px;
-  font-family: 'Lato', sans-serif;
-}
-body {
-  background-image: url('../images/tweed.png');
-  background-repeat: repeat;
-  background-attachment: fixed;
-}
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: 'Syncopate', sans-serif;
 }
+
+h1,
 h2 {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: #999999;
-  /*line-height: 29px;*/
+  color: #f08400;
+  color: hsl(33, 100%, 47%);
 }
 
-#main {
-  visibility: hidden;
-  max-width: 1200px;
-  margin: 0 auto;
+h2 {
+  margin: 0 0 2rem 2rem;
+  font-size: 2rem;
 }
 
-#workExperience, #education, #projects, #mapDiv {
-  /* bottom padding to match extent of padding top to top of h2 character */
-  padding:1rem 1rem 2.245rem 1rem;
+div {
+  box-sizing: border-box;
 }
 
-#mapDiv {
-  height: 400px;
-  width: 100%;
+/* a stab at viewing windows phone emulation in ie11. see https://msdn.microsoft.com/en-us/library/ie/hh869615(v=vs.85).aspx */
+@media screen and (orientation: landscape) {
+  @-ms-viewport {
+    width: 1024px;
+    height: 768px;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  @-ms-viewport {
+    width: 768px;
+    height: 1024px;
+  }
+}
+
+#spinner {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  -o-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+/* Menu */
+#main, #menu {
+  /* initially not seen */
+  opacity: 0;
+}
+
+#menu {
+  position:fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  padding: 0;
+  margin: 0.25rem 3.25rem;
+}
+
+@media screen and (orientation: portrait) and (max-width:640px) {
+  #menu{
+    margin: 0.25rem 0.25rem;
+  }
+}
+
+#menu li {
+  display: inline-block;
+  color: #000;
+  border-radius: 4px;
+  margin: 0 0.25rem 0.25rem 0.25rem;
+  background: rgba(255,255,255, 0.5);
+}
+
+#menu li.active {
+  color:#ccc;
+  line-height: 1.75rem;
+  /* background:#666; */
+  background: hsla(33, 100%, 47%, 1);
+}
+
+#menu li a {
+  text-decoration: none;
+  color: #111;
+}
+
+#menu li.active a:hover {
+  color: #fff;
+  background: hsla(33, 100%, 47%, 1);
+  border-radius: 4px;
+}
+
+#menu li:hover{
+  background: hsla(33, 100%, 47%, 0.75);
+}
+
+#menu li a:hover {
+  color: #ccc;
+}
+
+#menu li a,
+#menu li.active a {
+  display: block;
+  padding: 0.25rem 0.5rem;
+}
+
+#menu li.active a {
+  color: #fff;
+}
+
+/* section background images */
+#section0 {
+   background-image: url(../images/bkg/denim-tri2.png);
+}
+#section1 {
+   background-image: url(../images/bkg/denim-tri4.png);
+}
+#section2 {
+   background-image: url(../images/bkg/denim-tri1.png);
+}
+#section3 {
+   background-image: url(../images/bkg/denim-tri3.png);
+}
+#section4 {
+   background-image: url(../images/bkg/denim.png);
+}
+#section5 {
+   background-image: url(../images/bkg/denim-tri0.png);
+}
+
+.container {
+  background-color: rgba(128,128,128,.25);
+  margin: 0 3.25rem;
+  padding: 2.5rem 0 1.5rem 0;
+  color: #999;
 }
 
 
-#name {
+/* Section 0 - greeting */
+#section0 .container {
+  background-color: transparent;
+}
+
+#section0 .cell {
+  display: table-cell;
+  padding: 0 2rem 1.5rem 0;
+  vertical-align: top;
+}
+
+#section0 div.cell:last-child {
+  padding-right: 0;
+}
+
+#section0 h1 {
   font-size: 3rem;
-  color: #F5A623;
   line-height: 2.5rem;
   display: inline;
-  padding-right: .5rem;
-  margin-bottom: 0;
 }
 
-#name > span {
+#section0 h1 > span {
   display: inline-block;
-  padding-left:1rem;
-  font-size:1rem;
+  padding-left: 1rem;
+  font-size: 1rem;
   font-family: 'Lato', sans-serif;
 }
 
-#name > hr {
-  margin: 0;
-  border: 1px solid #999;
+#section0 h3 {
+  margin: 0 0 1rem 0;
+  color: #ccc;
 }
 
-li > span {
-  display:block;
-}
-
-.bg-head {
-  background-image:url("../images/me-standard-450.jpg");
-  background-repeat:no-repeat;
-  background-size:100%, 100%; /*contain;*/
-}
-
-.pad-sides {
-  padding:0 2rem;
-}
-
-.welcome-message {
-  color:#F5AE23;
-  padding:1rem 2rem 2rem 0;
+#section0 p {
+  color: #f08400;
+  color: hsl(33, 100%, 47%);
   font-family: 'Syncopate', sans-serif;
-  font-size: 1.17em;
+  font-size: 1.17rem;
   font-weight: bold;
-  line-height:1.5em;
+  line-height: 1.75rem;
+  margin: 0.5rem 0 0 0;
+  padding: 3rem 2rem 3rem 0;
+  border-top: 3px solid #666;
 }
 
-.bkg-work, .bkg-education, .bkg-projects, .bkg-map, .bkg-connect {
-  margin-top:2rem;
+#section0 img {
+  width: 100%;
+  height: auto;
 }
 
-.bkg-work, .bkg-education {
-  /*background-color: hsla(38, 21%, 56%, 1);*/
-  background-color: hsla(31, 94%, 24%, 0.5);
+#section0 ul {
+  padding: 0;
 }
 
-.bkg-projects {
-  background-color: hsla(31, 93%, 42%, 0.5);
-
+#section0 li {
+  display: inline-block;
+  line-height: 1.5rem;
+  padding: 0 1.5rem 0 0;
 }
 
-.bkg-map {
-
+/* Section 1 - work experience */
+#section1 .row {
+  display: table-row;
+  vertical-align: top;
 }
 
-.bkg-connect {
-
+#section1 .cell {
+  display: table-cell;
+  width: 50%;
+  padding: 0 2rem 1rem 2rem;
 }
 
-ul {
-  line-height:1.5em;
+.date-text {
+  float: right;
 }
 
-li.flex-item {
-  padding:0 1em;
-  color:#666;
+#section1 .location-text {
+  line-height: 1rem;
+  margin-top: 0.5rem;
 }
 
-.slick-slide > img {
-  width: inherit;
+#section1 a {
+  display: block;
+  text-decoration: none;
+  font-size: 1.17rem;
+  color: #ccc;
+}
+
+#section1 p {
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Section 2 - projects */
+#section2 h2 {
+  margin-left: 0;
+}
+
+#section2 .row {
+  display: table;
+  vertical-align: top;
+  width: 100%;
+}
+#section2 .cell {
+  display: table-cell;
+  width: 50%;
+  padding: 2rem 2rem 0 2rem;
+  vertical-align: top;
+}
+#section2 a {
+  display: block;
+  text-decoration: none;
+  font-size: 1.17rem;
+  color: #ccc;
+}
+#section2 p {
+  line-height: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.project-entry {
+  padding:2rem 2rem 0 2rem;
+}
+
+/* To use the fade option of slick carousel, a width needs to be specified. Native width of images used is 327px. To change to non-native width, both the slider and the img need to have the width specified (samve value)
+*/
+.fade.slick-slider {
+  width: 327px; /*100px; 327px;*/
+  margin: 0 auto 3rem auto;
+}
+/*
+.fade img {
+  width:100px;
+}
+*/
+@media screen and (orientation: portrait) and (max-width:640px) {
+  .fade.slick-slider {
+    width: 200px;
+  }
+  .fade img {
+    width:200px;
+  }
+}
+
+/* Section 3 - education */
+#section3 .row {
+  display: table-row;
+  vertical-align: top;
+}
+
+#section3 .cell {
+  display: table-cell;
+  width: 50%;
+  padding: 0 2rem 1rem 2rem;
+}
+
+#section3 div.cell:last-child {
+  padding-right: 2rem;
+}
+
+#section3 h3 {
+  margin: 0 0 1em 0;
+  font-size: 1.17rem;
+  border-bottom: 3px solid #999;
+  padding: 0 0 0.25rem 0;
+  text-align: right;
+}
+
+.education-entry {
+  padding: 0 0 1.5rem 0;
+}
+
+#section3 .location-text {
+  line-height: 1rem;
+  margin-top: 0.5rem;
+}
+
+#section3 a {
+  display: block;
+  text-decoration: none;
+  color: #ccc;
+  line-height: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* Section 4 - location */
+#map {
+  display: block;
+  height: 80%;
+  margin:0 10%;
+}
+
+#idwhereabouts {
+  height:500px;
+}
+
+/* Section 5 - connect */
+#section5 ul {
+  padding: 0 2rem;
+  margin: 0 1rem;
+}
+
+#section5 li {
+  display: inline-block;
+  line-height: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+#section5 span {
+  display: block;
+  color: #ccc;
+}
+
+#section5 h3 {
+  font-size: 1.17rem;
+  border-bottom: 3px solid #999;
+  padding: 0 0 0.25rem 0;
+  text-align: right;
+  margin: 0 2rem;
 }

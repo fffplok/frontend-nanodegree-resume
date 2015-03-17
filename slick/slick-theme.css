@@ -1,20 +1,9 @@
-@charset 'UTF-8';
 /* Slider */
 .slick-loading .slick-list
 {
     background: #fff url('./ajax-loader.gif') center center no-repeat;
 }
 
-/* Icons */
-@font-face
-{
-    font-family: 'slick';
-    font-weight: normal;
-    font-style: normal;
-
-    src: url('./fonts/slick.eot');
-    src: url('./fonts/slick.eot?#iefix') format('embedded-opentype'), url('./fonts/slick.woff') format('woff'), url('./fonts/slick.ttf') format('truetype'), url('./fonts/slick.svg#slick') format('svg');
-}
 /* Arrows */
 .slick-prev,
 .slick-next
@@ -23,9 +12,11 @@
     line-height: 0;
 
     position: absolute;
+
     top: 50%;
 
     display: block;
+    background:#feb;
 
     width: 20px;
     height: 20px;
@@ -64,9 +55,15 @@
 .slick-prev:before,
 .slick-next:before
 {
-    font-family: 'slick';
+    position:absolute;
+    box-sizing:border-box;
+    height:20px;
+    border-style:solid;
+
     font-size: 20px;
     line-height: 1;
+
+    width:20px;
 
     opacity: .75;
     color: white;
@@ -77,38 +74,62 @@
 
 .slick-prev
 {
-    left: -25px;
+    left: -29px;
 }
 [dir='rtl'] .slick-prev
 {
-    right: -25px;
+    right: -29px;
     left: auto;
 }
 .slick-prev:before
 {
-    content: '←';
+    content: '';
+    left:0;
+    top:0;
+    border-width: 10px 9px 10px 0;
+
+    border-color: transparent #ddd transparent transparent;
 }
 [dir='rtl'] .slick-prev:before
 {
-    content: '→';
+    content: '';
+
+    left:0;
+    top:0;
+    width:20px;
+    border-width: 10px 0 10px 9px;
+
+    border-color: transparent transparent transparent #ddd;
 }
 
 .slick-next
 {
-    right: -25px;
+    right: -29px;
 }
 [dir='rtl'] .slick-next
 {
     right: auto;
-    left: -25px;
+    left: -29px;
 }
 .slick-next:before
 {
-    content: '→';
+    content: '';
+    left:0;
+    top:0;
+    width:20px;
+    border-width: 10px 0 10px 9px;
+
+    border-color: transparent transparent transparent #ddd;
 }
 [dir='rtl'] .slick-next:before
 {
-    content: '←';
+    content: '';
+    left:0;
+    top:0;
+    width:20px;
+    border-width: 10px 9px 10px 0;
+
+    border-color: transparent #ddd transparent transparent;
 }
 
 /* Dots */
@@ -120,7 +141,6 @@
 .slick-dots
 {
     position: absolute;
-    bottom: -45px;
 
     display: block;
 
@@ -174,19 +194,20 @@
 }
 .slick-dots li button:before
 {
-    font-family: 'slick';
     font-size: 6px;
     line-height: 20px;
 
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 5px;
+    left: 5px;
 
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius:5px;
 
-    content: '•';
+    content: '';
     text-align: center;
+    background:#999;
 
     opacity: .25;
     color: black;

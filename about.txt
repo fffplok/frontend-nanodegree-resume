@@ -1,0 +1,26 @@
+Project 2 resources for Glen Giefer
+
+fullpage branch. This is the branch submitted for assessment.
+
+I used two jquery plugins:
+- A plugin for single page navigation, fullPage.js by Alvaro Trigo - https://github.com/alvarotrigo/fullPage.js
+- A carousel plugin, slick by Ken Wheeler - https://github.com/kenwheeler/slick/
+
+viewport info
+https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariWebContent/UsingtheViewport/UsingtheViewport.html
+http://www.quirksmode.org/mobile/viewports.html
+https://msdn.microsoft.com/library/ie/hh708740.aspx
+
+mdn for javascript references and some css
+css-tricks.com 
+msdn
+
+----------------------------------------------------------
+flexbox-grid branch. This is NOT for project2 assessment
+Spent a good deal of time looking at flexbox, and found a usable grid. Alas there were yet some issues with ie11 not consistently displaying layout as chrome and firefox, so I went with the fullpage version.
+some links
+http://flexboxgrid.com/
+http://demo.agektmr.com/flexbox/
+http://philipwalton.github.io/solved-by-flexbox/
+https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_flexbox_to_lay_out_web_applications
+
