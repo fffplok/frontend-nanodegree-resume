@@ -151,9 +151,11 @@ div {
 
 .container {
   background-color: rgba(128,128,128,.25);
+  color: #999;
+  /*width:75%;
+  margin:auto;*/
   margin: 0 3.25rem;
   padding: 2.5rem 0 1.5rem 0;
-  color: #999;
 }
 
 
@@ -278,7 +280,7 @@ div {
 }
 
 .project-entry {
-  padding:2rem 2rem 0 2rem;
+  padding:2rem; /*2rem 2rem 0 2rem;*/
 }
 
 /* To use the fade option of slick carousel, a width needs to be specified. Native width of images used is 327px. To change to non-native width, both the slider and the img need to have the width specified (samve value)

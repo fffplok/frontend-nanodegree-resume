@@ -61,7 +61,7 @@ var builder = {
 
     //connect
     if(document.getElementById('contacts') === null) {
-      $('#idconnect').hide(); //detach so no scrolling past empty section
+      $('#idconnect').hide();
     }
 	},
 
@@ -112,48 +112,48 @@ var bio = {
 		"html", "css", "javascript", "jquery", "svg", "git/github", "bootstrap", "handlebars"
 	],
 
-	"bioPic": "images/me-standard-450.jpg"
-};
+	"bioPic": "images/me-standard-450.jpg",
 
-//bio data is displayed in the header section and the lets connect section
-bio.display = function() {
-	//create jquery objects for dom manipulation. we need access to header and connect sections
-	var $connect = $main.find('#idconnect'),
-			cells =	$main.find('#idheader').find('.cell'),
-			$contacts, contacts = [], i;
+	//bio data is displayed in the header section and the lets connect section
+	display: function() {
+		//create jquery objects for dom manipulation. we need access to header and connect sections
+		var $connect = $main.find('#idconnect'),
+				cells =	$main.find('#idheader').find('.cell'),
+				$contacts, contacts = [], i;
 
-	if (this.contacts) {
-		$contacts = $(HTMLcontactList).append(HTMLmobile.replace(replaceable, this.contacts.mobile))
-									.append(HTMLemail.replace(replaceable, this.contacts.email))
-									.append(HTMLgithub.replace(replaceable, this.contacts.github))
-									.append(HTMLtwitter.replace(replaceable, this.contacts.twitter))
-									.append(HTMLlocation.replace(replaceable, this.contacts.location));
+		if (this.contacts) {
+			$contacts = $(HTMLcontactList).append(HTMLmobile.replace(replaceable, this.contacts.mobile))
+										.append(HTMLemail.replace(replaceable, this.contacts.email))
+										.append(HTMLgithub.replace(replaceable, this.contacts.github))
+										.append(HTMLtwitter.replace(replaceable, this.contacts.twitter))
+										.append(HTMLlocation.replace(replaceable, this.contacts.location));
 
-		//contacts to connect section
-		$connect.append($contacts);
-	}
-
-	//header section contains two cells. build first cell: name, role, message, skills
-	$(cells[0]).append($(HTMLheaderName.replace(replaceable,this.name)).append(HTMLheaderRole.replace(replaceable,this.role)));
-	if (this.welcomeMessage) {
-		$(cells[0]).append(HTMLWelcomeMsg.replace(replaceable,this.welcomeMessage));
-	} else {
-		$(cells[0]).append('<p></p>'); //empty paragraph to get line seperator
-	}
-
-	if (this.skills) {
-		$(cells[0]).append(HTMLskillsStart);
-
-		//build skills list
-		var $skillsList = $(cells[0]).find('#skills');
-
-		for (i = 0; i < this.skills.length; i++) {
-			$skillsList.append(HTMLskills.replace(replaceable,this.skills[i]));
+			//contacts to connect section
+			$connect.append($contacts);
 		}
-	}
 
-	//biopic to second cell of header
-	if (this.bioPic) $(cells[1]).append(HTMLbioPic.replace(replaceable, this.bioPic));
+		//header section contains two cells. build first cell: name, role, message, skills
+		$(cells[0]).append($(HTMLheaderName.replace(replaceable,this.name)).append(HTMLheaderRole.replace(replaceable,this.role)));
+		if (this.welcomeMessage) {
+			$(cells[0]).append(HTMLWelcomeMsg.replace(replaceable,this.welcomeMessage));
+		} else {
+			$(cells[0]).append('<p></p>'); //empty paragraph to get line seperator
+		}
+
+		if (this.skills) {
+			$(cells[0]).append(HTMLskillsStart);
+
+			//build skills list
+			var $skillsList = $(cells[0]).find('#skills');
+
+			for (i = 0; i < this.skills.length; i++) {
+				$skillsList.append(HTMLskills.replace(replaceable,this.skills[i]));
+			}
+		}
+
+		//biopic to second cell of header
+		if (this.bioPic) $(cells[1]).append(HTMLbioPic.replace(replaceable, this.bioPic));
+	}
 };
 
 var work = {
@@ -179,33 +179,33 @@ var work = {
 			"dates": "1999",
 			"description": "book schlepper"
 		}
-	]
-};
+	],
 
-work.display = function() {
-	//create jquery objects for dom manipulation. we need access to work section
-	var $work = $main.find('#idwork'),
-			i, $row, $cell, $workDates; /*, htmlLocDate, htmlEmployTitle, htmlDesc, htmlContent;*/
+	display: function() {
+		//create jquery objects for dom manipulation. we need access to work section
+		var $work = $main.find('#idwork'),
+				i, $row, $cell, $workDates; /*, htmlLocDate, htmlEmployTitle, htmlDesc, htmlContent;*/
 
-	if (this.jobs) {
-		//there are two cells for every row in the work section
-		for (i = 0; i < this.jobs.length; i++) {
-			//append row every two cells
-			if (i % 2 === 0) {
-				$row = $(HTMLworkRow);
-				$work.append($row);
+		if (this.jobs) {
+			//there are two cells for every row in the work section
+			for (i = 0; i < this.jobs.length; i++) {
+				//append row every two cells
+				if (i % 2 === 0) {
+					$row = $(HTMLworkRow);
+					$work.append($row);
+				}
+
+				//build cell and append it to the current row
+				$cell = $(HTMLcell);
+
+				//span for dates appended to the paragraph that contains location
+				$workDates = $(HTMLworkLocation.replace(replaceable, this.jobs[i].location)).append(HTMLworkDates.replace(replaceable, this.jobs[i].dates));
+
+				$cell.append(HTMLworkEmployer.replace(replaceable, this.jobs[i].employer) + HTMLworkTitle.replace(replaceable, this.jobs[i].title));
+				$cell.append($workDates).append(HTMLworkDescription.replace(replaceable, this.jobs[i].description));
+
+				$row.append($cell);
 			}
-
-			//build cell and append it to the current row
-			$cell = $(HTMLcell);
-
-			//span for dates appended to the paragraph that contains location
-			$workDates = $(HTMLworkLocation.replace(replaceable, this.jobs[i].location)).append(HTMLworkDates.replace(replaceable, this.jobs[i].dates));
-
-			$cell.append(HTMLworkEmployer.replace(replaceable, this.jobs[i].employer) + HTMLworkTitle.replace(replaceable, this.jobs[i].title));
-			$cell.append($workDates).append(HTMLworkDescription.replace(replaceable, this.jobs[i].description));
-
-			$row.append($cell);
 		}
 	}
 };
@@ -284,74 +284,74 @@ var projects = {
 			"description": "A lovely treehouse nestled in the woods overlooking the road.",
 			"images": ["images/treehouse.jpg"]
 		}
-	]
-};
+	],
 
-projects.display = function() {
-	//create jquery objects for dom manipulation. we need access to projects section
-	var $projects = $main.find('#idprojects'),
-			$cell, $row, $container, $slide,
-			i, j, project, htmlContent;
+	display: function() {
+		//create jquery objects for dom manipulation. we need access to projects section
+		var $projects = $main.find('#idprojects'),
+				$cell, $row, $container, $slide,
+				i, j, project, htmlContent;
 
-	//for each project, we create a slide. a slide contains a header followed by one or two rows
-	if (this.projects) {
-		for (i = 0; i < this.projects.length; i++) {
-			project = this.projects[i];
+		//for each project, we create a slide. a slide contains a header followed by one or two rows
+		if (this.projects) {
+			for (i = 0; i < this.projects.length; i++) {
+				project = this.projects[i];
 
-			//header appended to container
-			$container = $(HTMLprojectStart).append(HTMLprojectHeader);
+				//header appended to container
+				$container = $(HTMLprojectStart).append(HTMLprojectHeader);
 
-			//first row populated and appended to container
-			$row = $(HTMLrow);
-			htmlContent = HTMLprojectDates.replace(replaceable, project.dates) + HTMLprojectTitle.replace(replaceable, project.title)	+ HTMLprojectDescription.replace(replaceable, project.description);
-
-			$row.append(htmlContent);
-			$container.append($row);
-
-			//determine if there will be a second row, build and append to container if so. if there is an images object, there'll be a second row. the second row may one or two cells
-			if (project.images) {
-				htmlContent = '';
+				//first row populated and appended to container
 				$row = $(HTMLrow);
-				$cell = $(HTMLcell);
+				htmlContent = HTMLprojectDates.replace(replaceable, project.dates) + HTMLprojectTitle.replace(replaceable, project.title)	+ HTMLprojectDescription.replace(replaceable, project.description);
 
-				//single image
-				if (project.images.length <= 1) {
-					htmlContent += HTMLprojectImage.replace(replaceable, project.images[0]);
-					$cell.append(htmlContent);
-				} else {
-					//multiple images (in carousel)
+				$row.append(htmlContent);
+				$container.append($row);
 
-					//important. need identifier for managing feedback
-					$row.attr('id',' car-'+i);
+				//determine if there will be a second row, build and append to container if so. if there is an images object, there'll be a second row. the second row may one or two cells
+				if (project.images) {
+					htmlContent = '';
+					$row = $(HTMLrow);
+					$cell = $(HTMLcell);
 
-					for (j = 0; j < project.images.length; j++) {
-						htmlContent += HTMLprojectImage.replace(replaceable, project.images[j].img);
-					}
-					$cell.append($(HTMLprojectFade).append(htmlContent));
-				}
-				$row.append($cell);
-
-				//determine if there is a second cell. carousel will use per image feedback. single image option requires a top level feedback object for addtional text
-				if (project.images.length > 1 || project.feedback) {
-					$cell = $(HTMLcellFeedback);
-					if (project.feedback) {
-						$cell.find('p').append(project.feedback);
+					//single image
+					if (project.images.length <= 1) {
+						htmlContent += HTMLprojectImage.replace(replaceable, project.images[0]);
+						$cell.append(htmlContent);
 					} else {
-						//feedback for first image in carousel
-						$cell.find('p').append(project.images[0].feedback);
+						//multiple images (in carousel)
+
+						//important. need identifier for managing feedback
+						$row.attr('id',' car-'+i);
+
+						for (j = 0; j < project.images.length; j++) {
+							htmlContent += HTMLprojectImage.replace(replaceable, project.images[j].img);
+						}
+						$cell.append($(HTMLprojectFade).append(htmlContent));
 					}
 					$row.append($cell);
+
+					//determine if there is a second cell. carousel will use per image feedback. single image option requires a top level feedback object for addtional text
+					if (project.images.length > 1 || project.feedback) {
+						$cell = $(HTMLcellFeedback);
+						if (project.feedback) {
+							$cell.find('p').append(project.feedback);
+						} else {
+							//feedback for first image in carousel
+							$cell.find('p').append(project.images[0].feedback);
+						}
+						$row.append($cell);
+					}
+
+					//append second row
+					$container.append($row);
 				}
 
-				//append second row
-				$container.append($row);
+				//append container to slide
+				$slide = $(HTMLprojectSlide).append($container);
+
+				//append slide to projects (multi-slide view)
+				$projects.append($slide);
 			}
-
-			//append container to slide
-			$slide = $(HTMLprojectSlide).append($container);
-
-			//append slide to projects (multi-slide view)
-			$projects.append($slide);
 		}
 	}
 };
@@ -398,35 +398,35 @@ var education = {
 			"url": "http://codeschool.com/"
 		},
 
-	]
-};
+	],
 
-education.display = function() {
-	//create jquery objects for dom manipulation. we need access to cells of the education section
-	var cells = $main.find('#ideducation').find('.cell'),
-			schools = this.schools,
-			onlineCourses = this.onlineCourses,
-			i, start, htmlContent;
+	display: function() {
+		//create jquery objects for dom manipulation. we need access to cells of the education section
+		var cells = $main.find('#ideducation').find('.cell'),
+				schools = this.schools,
+				onlineCourses = this.onlineCourses,
+				i, start, htmlContent;
 
-	//first cell contains divs with traditional courses
-	if (schools && schools.length > 0)	{
-		for (i = 0; i < schools.length; i++) {
-			start = $(HTMLschoolStart);
-			htmlContent = HTMLschoolName.replace(replaceable, schools[i].name) + HTMLschoolDegree.replace(replaceable, schools[i].degree) + HTMLschoolDates.replace(replaceable, schools[i].dates) + HTMLschoolLocation.replace(replaceable, schools[i].location) + HTMLschoolMajor.replace(replaceable, schools[i].majors.join(", "));
+		//first cell contains divs with traditional courses
+		if (schools && schools.length > 0)	{
+			for (i = 0; i < schools.length; i++) {
+				start = $(HTMLschoolStart);
+				htmlContent = HTMLschoolName.replace(replaceable, schools[i].name) + HTMLschoolDegree.replace(replaceable, schools[i].degree) + HTMLschoolDates.replace(replaceable, schools[i].dates) + HTMLschoolLocation.replace(replaceable, schools[i].location) + HTMLschoolMajor.replace(replaceable, schools[i].majors.join(", "));
 
-			start.append($(htmlContent));
-			$(cells[0]).append(start);
+				start.append($(htmlContent));
+				$(cells[0]).append(start);
+			}
 		}
-	}
 
-	//second cell contains divs with online courses
-	if (onlineCourses && onlineCourses.length > 0)	{
-		for (i= 0; i < onlineCourses.length; i++) {
-			start = $(HTMLschoolStart);
-			htmlContent = HTMLonlineTitle.replace(replaceable, onlineCourses[i].title) + HTMLonlineSchool.replace(replaceable, onlineCourses[i].school) + HTMLonlineDates.replace(replaceable, onlineCourses[i].date) + HTMLonlineURL.replace(replaceable, onlineCourses[i].url);
+		//second cell contains divs with online courses
+		if (onlineCourses && onlineCourses.length > 0)	{
+			for (i= 0; i < onlineCourses.length; i++) {
+				start = $(HTMLschoolStart);
+				htmlContent = HTMLonlineTitle.replace(replaceable, onlineCourses[i].title) + HTMLonlineSchool.replace(replaceable, onlineCourses[i].school) + HTMLonlineDates.replace(replaceable, onlineCourses[i].date) + HTMLonlineURL.replace(replaceable, onlineCourses[i].url);
 
-			start.append($(htmlContent));
-			$(cells[1]).append(start);
+				start.append($(htmlContent));
+				$(cells[1]).append(start);
+			}
 		}
 	}
 };
