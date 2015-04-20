@@ -1,5 +1,5 @@
 html {
-  font-size: 18px; /*16px;*/
+  font-size: 18px;
   font-family: 'Lato', sans-serif;
   background-color: #24282c;
 }
@@ -64,6 +64,11 @@ div {
   transform: translate(-50%, -50%);
 }
 
+.external-link {
+  display: inline-block;
+  margin: 0 0 .5rem .125rem;
+}
+
 /* Menu */
 #main, #menu {
   /* initially not seen */
@@ -95,7 +100,7 @@ div {
 
 #menu li.active {
   color:#ccc;
-  line-height: 1.75rem;
+  line-height: 1.6rem;
   /* background:#666; */
   background: hsla(33, 100%, 47%, 1);
 }
@@ -122,7 +127,7 @@ div {
 #menu li a,
 #menu li.active a {
   display: block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 }
 
 #menu li.active a {
@@ -154,10 +159,13 @@ div {
   color: #999;
   /*width:75%;
   margin:auto;*/
-  margin: 0 3.25rem;
+  margin: 0 60px; /*3.25rem;*/
   padding: 2.5rem 0 1.5rem 0;
 }
 
+.smaller {
+  font-size: .825rem;
+}
 
 /* Section 0 - greeting */
 #section0 .container {
@@ -304,6 +312,11 @@ div {
 }
 
 /* Section 3 - education */
+#section3 h4 {
+  font-family: 'Lato', sans-serif;
+  color: #ccc;
+  margin:.5rem 0 0 0;
+}
 #section3 .row {
   display: table-row;
   vertical-align: top;
@@ -365,6 +378,12 @@ div {
   display: inline-block;
   line-height: 1.5rem;
   padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+#section5 a {
+  display: block;
+  text-decoration: none;
+  color: #ccc;
 }
 
 #section5 span {
